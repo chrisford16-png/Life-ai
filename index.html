@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<meta name="description" content="LIFE AI — a free everyday assistant for planning, ideas, learning and getting things done.">
+<link rel="manifest" href="manifest.webmanifest">
+<title>LIFE AI — Your everyday assistant</title>
+<style>
+:root{color-scheme:dark;--bg:#09111e;--panel:#111e30;--panel2:#17283d;--line:#2a4059;--text:#f4f7fb;--muted:#a9b8ca;--blue:#69b7ff;--green:#79d9b3;--danger:#ff9292}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#183452 0,transparent 32%),linear-gradient(135deg,#09111e,#101d30 65%,#09111e);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer}.app{max-width:1200px;margin:auto;padding:18px;display:grid;grid-template-columns:245px minmax(0,1fr);gap:16px;min-height:100vh}
+.sidebar,.main{background:rgba(17,30,48,.96);border:1px solid var(--line);border-radius:22px}.sidebar{padding:18px;display:flex;flex-direction:column;gap:20px}.brand{display:flex;align-items:center;gap:11px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#65bdff,#315fbb);display:grid;place-items:center;font-size:22px;font-weight:800;box-shadow:0 8px 24px #287ec455}.brand strong{font-size:20px;letter-spacing:.8px}.brand small{display:block;color:var(--muted);font-size:12px}
+.nav{display:grid;gap:6px}.nav button{border:0;text-align:left;background:transparent;color:var(--muted);padding:11px 12px;border-radius:12px;display:flex;gap:12px;align-items:center}.nav button.active,.nav button:hover{background:#203650;color:white}.nav .ico{width:22px;text-align:center}
+.free-note{margin-top:auto;background:#172d3d;border:1px solid #31546a;padding:13px;border-radius:15px;color:#c9dbea;font-size:13px}.free-note b{color:var(--green)}
+.main{padding:24px;min-height:calc(100vh - 36px);display:flex;flex-direction:column}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}.eyebrow{color:var(--blue);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px}.top h1{font-size:clamp(25px,4vw,35px);line-height:1.15;margin:5px 0}.sub{color:var(--muted);margin:0}.pill{border:1px solid #31506b;background:#152a40;color:#c9e5ff;padding:7px 12px;border-radius:99px;font-size:12px;white-space:nowrap}
+.panel{display:none}.panel.active{display:block}.welcome{background:radial-gradient(circle at 85% 10%,#285786 0,transparent 35%),linear-gradient(120deg,#1b3651,#17283d);border:1px solid #345572;border-radius:19px;padding:22px;margin-bottom:18px}.welcome h2{font-size:24px;margin:0 0 7px}.welcome p{color:#c6d9ec;margin:0;max-width:680px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.tool{border:1px solid var(--line);background:var(--panel2);border-radius:15px;padding:16px;text-align:left;color:var(--text);min-height:116px;transition:.18s}.tool:hover{transform:translateY(-2px);border-color:#4b85b4;background:#20364f}.tool .emoji{font-size:22px}.tool b{display:block;margin:7px 0 3px}.tool small{color:var(--muted)}
+.section-title{margin:22px 0 10px;font-size:18px}.card{background:#15263a;border:1px solid var(--line);border-radius:15px;padding:15px;margin:10px 0}.muted{color:var(--muted)}.field{width:100%;background:#0e1b2b;border:1px solid #344b65;color:white;border-radius:11px;padding:12px;margin:7px 0 12px}.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.row .field{flex:1;min-width:180px}.primary,.secondary,.danger{border:0;border-radius:11px;padding:11px 15px;font-weight:700}.primary{background:linear-gradient(135deg,#4aa9f5,#286fba);color:white}.secondary{background:#233b55;color:#e6f3ff;border:1px solid #3b5875}.danger{background:#472b37;color:#ffdfe2;border:1px solid #70404b}.small{font-size:13px;padding:7px 10px}
+.chatbox{border:1px solid var(--line);border-radius:17px;overflow:hidden;background:#0e1928;display:flex;flex-direction:column;min-height:390px}.messages{padding:16px;display:flex;flex-direction:column;gap:11px;flex:1;max-height:52vh;overflow:auto}.msg{max-width:86%;padding:11px 14px;border-radius:15px;white-space:pre-wrap}.msg.bot{background:#1a2b40;border:1px solid #2b4059;align-self:flex-start}.msg.user{background:#236ca8;align-self:flex-end}.composer{display:flex;gap:8px;padding:11px;border-top:1px solid var(--line)}.composer input{min-width:0;flex:1;background:#152337;border:1px solid #344b65;border-radius:11px;padding:12px;color:white;outline:none}
+.task{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.task input{accent-color:#54b2ff;width:18px;height:18px}.task span{flex:1;overflow-wrap:anywhere}.done{text-decoration:line-through;color:#8292a7}.task-actions{display:flex;gap:6px}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#14263a;border:1px solid var(--line);padding:14px;border-radius:14px}.stat strong{font-size:24px;display:block}.stat span{font-size:12px;color:var(--muted)}
+.result-list p{margin:8px 0}.notice{border-left:3px solid var(--blue);padding:10px 12px;background:#13283c;color:#d5e7f7;border-radius:7px;font-size:13px}.footer{margin-top:auto;padding-top:20px;color:#8293a8;font-size:12px;text-align:center}
+@media(max-width:780px){.app{display:block;padding:9px}.sidebar{margin-bottom:9px;padding:12px;gap:11px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:9px}.free-note{display:none}.main{padding:16px;min-height:80vh}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top{align-items:flex-start}.messages{max-height:48vh}}
+@media(max-width:430px){.grid{grid-template-columns:1fr}.pill{display:none}.welcome{padding:17px}.main{padding:13px}.statgrid{grid-template-columns:1fr 1fr 1fr}.stat{padding:10px}.stat strong{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">✦</div><div><strong>LIFE AI</strong><small>Your everyday assistant</small></div></div>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="active" data-page="home"><span class="ico">⌂</span>Home</button>
+    <button data-page="chat"><span class="ico">✧</span>AI Assistant</button>
+    <button data-page="business"><span class="ico">▣</span>Business Builder</button>
+    <button data-page="ideas"><span class="ico">💡</span>Idea Studio</button>
+    <button data-page="organizer"><span class="ico">✓</span>Life Organizer</button>
+    <button data-page="learn"><span class="ico">◎</span>Learning Center</button>
+    <button data-page="notes"><span class="ico">📝</span>Notes</button>
+  </nav>
+  <div class="free-note"><b>Free edition</b><br>Tasks, notes and plans are saved on this device. No account or subscription is required for this prototype.</div>
+</aside>
+<main class="main">
+<header class="top"><div><div class="eyebrow">A little help goes a long way</div><h1 id="pageTitle">Good to see you.</h1><p class="sub" id="pageSub">What would you like to make happen today?</p></div><span class="pill">✦ FREE EDITION</span></header>
+
+<section class="panel active" id="home">
+  <div class="welcome"><h2>Make today count.</h2><p>Your personal workspace for ideas, learning, planning and getting things done. Start with one small step.</p></div>
+  <div class="statgrid">
+    <div class="stat"><strong id="openCount">0</strong><span>Open tasks</span></div>
+    <div class="stat"><strong id="doneCount">0</strong><span>Completed</span></div>
+    <div class="stat"><strong id="noteCount">0</strong><span>Saved notes</span></div>
+  </div>
+  <h3 class="section-title">What would you like to do?</h3>
+  <div class="grid">
+    <button class="tool" data-go="chat"><span class="emoji">✧</span><b>Ask LIFE AI</b><small>Get help thinking through a question.</small></button>
+    <button class="tool" data-go="business"><span class="emoji">▣</span><b>Start a business</b><small>Explore an idea and build a starter plan.</small></button>
+    <button class="tool" data-go="ideas"><span class="emoji">💡</span><b>Create an idea</b><small>Brainstorm projects, content and products.</small></button>
+    <button class="tool" data-go="organizer"><span class="emoji">✓</span><b>Organize my life</b><small>Keep track of tasks and priorities.</small></button>
+    <button class="tool" data-go="learn"><span class="emoji">◎</span><b>Learn something</b><small>Build a skill step by step.</small></button>
+    <button class="tool" data-go="notes"><span class="emoji">📝</span><b>Save a note</b><small>Keep useful thoughts in one place.</small></button>
+  </div>
+  <h3 class="section-title">Your next steps</h3><div class="card" id="homeTasks"><span class="muted">No tasks yet. Add one in Life Organizer.</span></div>
+</section>
+
+<section class="panel" id="chat">
+  <div class="row" style="justify-content:space-between;margin-bottom:9px">
+    <span class="muted" style="font-size:13px">Your recent chat is saved on this device.</span>
+    <div class="row"><button class="secondary small" id="voiceInput" type="button">🎙 Voice input</button><button class="secondary small" id="speakLatest" type="button">🔊 Read latest reply</button><button class="secondary small" id="clearChat" type="button">Clear chat</button></div>
+  </div>
+  <div class="chatbox"><div class="messages" id="messages"><div class="msg bot">Hi! I'm LIFE AI. I can help you plan, brainstorm, learn and organize. What would you like to work on?</div></div>
+    <form class="composer" id="chatForm"><input id="chatInput" placeholder="Type a question..." autocomplete="off" aria-label="Your message"><button class="primary">Send ↑</button></form>
+  </div>
+  <p class="notice" id="aiStatus" style="margin-top:10px">Real AI becomes active after the secure server key is configured. Voice input and spoken replies depend on browser support.</p>
+</section>
+
+<section class="panel" id="business">
+  <div class="welcome"><h2>Turn an idea into a plan.</h2><p>Start small. Choose a customer, find a real problem and test a useful offer before spending money.</p></div>
+  <label for="biz">What kind of business interests you?</label><input class="field" id="biz" placeholder="e.g. helping local businesses use AI">
+  <button class="primary" id="makePlan">Create my starter plan</button><div id="bizResult" class="card result-list" hidden></div>
+</section>
+
+<section class="panel" id="ideas">
+  <div class="welcome"><h2>Idea Studio</h2><p>Turn a rough thought into something you can test in the real world.</p></div>
+  <label for="ideaTopic">What do you want ideas about?</label><input class="field" id="ideaTopic" placeholder="e.g. useful inventions, online business, videos">
+  <button class="primary" id="makeIdeas">Generate ideas</button><div id="ideaResult" class="card result-list" hidden></div>
+</section>
+
+<section class="panel" id="organizer">
+  <div class="welcome"><h2>Make room for what matters.</h2><p>Add tasks, check them off and remove anything you no longer need.</p></div>
+  <form id="taskForm" class="row"><input class="field" id="taskInput" placeholder="Add a task..." aria-label="New task" required><button class="primary">Add task</button></form>
+  <div class="row" style="justify-content:space-between"><b>Your tasks</b><button class="secondary small" id="clearDone" type="button">Clear completed</button></div>
+  <div class="card" id="tasks"></div>
+</section>
+
+<section class="panel" id="learn">
+  <div class="welcome"><h2>Learn at your own pace.</h2><p>Choose a subject and get a simple path with practical steps.</p></div>
+  <label for="subject">What would you like to learn?</label><input class="field" id="subject" placeholder="e.g. starting an online business">
+  <button class="primary" id="makeLesson">Build my learning path</button><div id="lessonResult" class="card result-list" hidden></div>
+</section>
+
+<section class="panel" id="notes">
+  <div class="welcome"><h2>Your notebook.</h2><p>Save ideas, reminders and useful information in this browser.</p></div>
+  <form id="noteForm"><label for="noteTitle">Title</label><input class="field" id="noteTitle" placeholder="A short title" required><label for="noteBody">Note</label><textarea class="field" id="noteBody" rows="4" placeholder="Write your note..." required></textarea><button class="primary">Save note</button></form>
+  <h3 class="section-title">Saved notes</h3><div id="notesList"></div>
+</section>
+<div class="footer">LIFE AI • Free edition • Your personal data stays in this browser</div>
+</main></div>
+<script>
+const $=s=>document.querySelector(s);
+const pageInfo={home:["Good to see you.","What would you like to make happen today?"],chat:["AI Assistant","Tell me what's on your mind."],business:["Business Builder","Take a practical first step."],ideas:["Idea Studio","Explore possibilities."],organizer:["Life Organizer","Your tasks, all in one place."],learn:["Learning Center","Build a skill step by step."],notes:["Your Notes","Keep your thoughts organized."]};
+function go(page){document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===page));document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));$("#pageTitle").textContent=pageInfo[page][0];$("#pageSub").textContent=pageInfo[page][1];}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.go)));
+function readStore(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
+let tasks=readStore("lifeai_tasks",[]), notes=readStore("lifeai_notes",[]);
+function persist(){try{localStorage.setItem("lifeai_tasks",JSON.stringify(tasks));localStorage.setItem("lifeai_notes",JSON.stringify(notes))}catch(e){alert("Your browser storage is full or unavailable. Please export or remove some saved items.")}renderAll()}
+function renderTasks(){const box=$("#tasks");box.innerHTML="";if(!tasks.length){box.innerHTML='<span class="muted">No tasks yet. Add one above to get started.</span>'}tasks.forEach((t,i)=>{const row=document.createElement("div");row.className="task";const cb=document.createElement("input");cb.type="checkbox";cb.checked=!!t.done;cb.setAttribute("aria-label","Mark "+t.text+" complete");cb.addEventListener("change",()=>{tasks[i].done=cb.checked;persist()});const span=document.createElement("span");span.textContent=t.text;span.className=t.done?"done":"";const del=document.createElement("button");del.className="danger small";del.textContent="Delete";del.type="button";del.addEventListener("click",()=>{tasks.splice(i,1);persist()});row.append(cb,span,del);box.append(row)})}
+function renderNotes(){const box=$("#notesList");box.innerHTML="";if(!notes.length){box.innerHTML='<div class="card muted">No saved notes yet.</div>'}notes.forEach((n,i)=>{const card=document.createElement("article");card.className="card";const h=document.createElement("b");h.textContent=n.title;const p=document.createElement("p");p.className="muted";p.style.whiteSpace="pre-wrap";p.textContent=n.body;const del=document.createElement("button");del.className="danger small";del.textContent="Delete note";del.type="button";del.addEventListener("click",()=>{notes.splice(i,1);persist()});card.append(h,p,del);box.append(card)})}
+function renderHome(){const open=tasks.filter(t=>!t.done).length,done=tasks.filter(t=>t.done).length;$("#openCount").textContent=open;$("#doneCount").textContent=done;$("#noteCount").textContent=notes.length;const box=$("#homeTasks");box.innerHTML="";const upcoming=tasks.filter(t=>!t.done).slice(0,4);if(!upcoming.length){box.innerHTML='<span class="muted">No open tasks. Add one in Life Organizer.</span>';return}upcoming.forEach(t=>{const p=document.createElement("p");p.textContent="• "+t.text;box.append(p)})}
+function renderAll(){renderTasks();renderNotes();renderHome()}
+$("#taskForm").addEventListener("submit",e=>{e.preventDefault();const v=$("#taskInput").value.trim();if(!v)return;tasks.push({text:v,done:false});$("#taskInput").value="";persist()});
+$("#clearDone").addEventListener("click",()=>{tasks=tasks.filter(t=>!t.done);persist()});
+$("#noteForm").addEventListener("submit",e=>{e.preventDefault();const title=$("#noteTitle").value.trim(),body=$("#noteBody").value.trim();if(!title||!body)return;notes.unshift({title,body,createdAt:new Date().toISOString()});$("#noteTitle").value="";$("#noteBody").value="";persist()});
+function addMessage(text,who){const d=document.createElement("div");d.className="msg "+who;d.textContent=text;$("#messages").append(d);$("#messages").scrollTop=$("#messages").scrollHeight;return d}
+const conversation=readStore("lifeai_chat",[]);
+function saveChat(){try{localStorage.setItem("lifeai_chat",JSON.stringify(conversation.slice(-30)))}catch{}}
+function restoreChat(){if(conversation.length){$("#messages").innerHTML="";conversation.forEach(m=>addMessage(m.content,m.role==="user"?"user":"bot"))}}
+async function askLifeAI(messages){
+  const response=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages})});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||"The AI service could not answer right now.");
+  if(typeof data.reply!=="string"||!data.reply.trim())throw new Error("The AI service returned an empty reply.");
+  return data.reply.trim();
+}
+function speak(text){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.rate=1;window.speechSynthesis.speak(utterance)}
+$("#chatForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const q=$("#chatInput").value.trim();
+  if(!q)return;
+  addMessage(q,"user");$("#chatInput").value="";
+  conversation.push({role:"user",content:q});saveChat();
+  const pending=addMessage("LIFE AI is thinking…","bot");
+  const send=$("#chatForm button");send.disabled=true;send.textContent="Thinking…";
+  try{
+    const answer=await askLifeAI(conversation.slice(-12));
+    pending.textContent=answer;
+    conversation.push({role:"assistant",content:answer});saveChat();
+    $("#aiStatus").textContent="Connected to the LIFE AI real-AI service. Chat is saved on this device.";
+  }catch(err){
+    pending.textContent=err.message.includes("Failed to fetch")
+      ?"I can't reach the AI server yet. Deploy this project and add your AI API key as a server environment variable."
+      :err.message;
+    $("#aiStatus").textContent="AI connection needs setup. Your API key must be added on the server, never in this page.";
+  }finally{send.disabled=false;send.textContent="Send ↑";$("#messages").scrollTop=$("#messages").scrollHeight;}
+});
+$("#speakLatest").addEventListener("click",()=>{const latest=[...conversation].reverse().find(m=>m.role==="assistant");if(latest)speak(latest.content);else $("#aiStatus").textContent="There is no AI reply to read aloud yet."});
+$("#clearChat").addEventListener("click",()=>{conversation.length=0;saveChat();$("#messages").innerHTML='<div class="msg bot">Chat cleared. What would you like to work on?</div>';if("speechSynthesis" in window)window.speechSynthesis.cancel()});
+$("#voiceInput").addEventListener("click",()=>{
+  const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRecognition){$("#aiStatus").textContent="Voice input is not supported in this browser. You can still type your message.";return}
+  const recognition=new SpeechRecognition();recognition.lang=navigator.language||"en-US";recognition.interimResults=false;recognition.maxAlternatives=1;
+  $("#voiceInput").disabled=true;$("#voiceInput").textContent="Listening…";
+  recognition.onresult=event=>{$("#chatInput").value=event.results[0][0].transcript;$("#chatInput").focus()};
+  recognition.onerror=()=>{$("#aiStatus").textContent="Voice input could not start. Check microphone permission and try again."};
+  recognition.onend=()=>{$("#voiceInput").disabled=false;$("#voiceInput").textContent="🎙 Voice input"};
+  try{recognition.start()}catch{$("#voiceInput").disabled=false;$("#voiceInput").textContent="🎙 Voice input"}
+});
+function showList(el,title,items){el.hidden=false;el.innerHTML="";const h=document.createElement("h3");h.textContent=title;el.append(h);items.forEach((t,i)=>{const p=document.createElement("p");p.textContent=(i+1)+". "+t;el.append(p)})}
+async function runGenerator(button,resultBox,prompt,title){
+  button.disabled=true;const original=button.textContent;button.textContent="Working…";resultBox.hidden=false;resultBox.textContent="LIFE AI is preparing this for you…";
+  try{const answer=await askLifeAI([{role:"user",content:prompt}]);resultBox.textContent="";const h=document.createElement("h3");h.textContent=title;const p=document.createElement("p");p.style.whiteSpace="pre-wrap";p.textContent=answer;resultBox.append(h,p)}
+  catch(err){resultBox.textContent=err.message}
+  finally{button.disabled=false;button.textContent=original}
+}
+$("#makePlan").addEventListener("click",()=>{const v=$("#biz").value.trim()||"a small service business";runGenerator($("#makePlan"),$("#bizResult"),"Create a realistic, beginner-friendly business starter plan for: "+v+". Include customer, problem, offer, low-cost validation steps, pricing considerations, first-week action plan, and risks. Be specific and do not invent market research.","Your LIFE AI business plan")});
+$("#makeIdeas").addEventListener("click",()=>{const v=$("#ideaTopic").value.trim()||"everyday life";runGenerator($("#makeIdeas"),$("#ideaResult"),"Brainstorm 7 practical, original ideas about: "+v+". For each, explain who it helps, the problem solved, and the cheapest way to test it. Avoid unsupported claims.","Ideas from LIFE AI")});
+$("#makeLesson").addEventListener("click",()=>{const v=$("#subject").value.trim()||"a new skill";runGenerator($("#makeLesson"),$("#lessonResult"),"Build a beginner-friendly learning path for: "+v+". Give a 7-day plan with clear daily actions, a small exercise, and a way to check progress. Explain jargon simply.","Your LIFE AI learning path")});
+restoreChat();
+renderAll();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body></html>
