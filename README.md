@@ -43,3 +43,12 @@ Tasks, notes, and chat history are stored in local browser storage on the device
 - The live AI requires the owner to configure a valid API key and deploy the server route.
 - AI provider calls can cost money; the app is free to users only if the owner funds operation.
 - No sign-in, cloud sync, multi-device backup, native Play Store package, or production-grade shared rate limiting is included yet.
+
+
+## Vercel project settings
+- Framework Preset: **Other**
+- Root Directory: repository root (the folder containing `index.html` and `vercel.json`)
+- Build Command: leave blank
+- Output Directory: leave blank
+- Install Command: leave blank (no build dependencies are required)
+- Node.js runtime: use Node.js 20 or newer
