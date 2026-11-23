@@ -1,0 +1,11 @@
+{
+  "name": "LIFE AI — Your Everyday Assistant",
+  "short_name": "LIFE AI",
+  "description": "A free, installable everyday assistant for planning, ideas, learning and tasks.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#101b2b",
+  "icons": []
+}
